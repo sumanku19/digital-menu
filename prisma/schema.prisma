@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  fullName  String
+  country   String
+  createdAt DateTime  @default(now())
+
+  restaurants Restaurant[]
+  otps        OTP[]
+}
+
+model OTP {
+  id        String   @id @default(cuid())
+  email     String
+  code      String
+  expiresAt DateTime
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Restaurant {
+  id        String   @id @default(cuid())
+  name      String
+  location  String
+  ownerId   String
+  owner     User     @relation(fields: [ownerId], references: [id])
+  slug      String   @unique
+  createdAt DateTime @default(now())
+
+  categories Category[]
+  dishes     Dish[]
+}
+
+model Category {
+  id           String   @id @default(cuid())
+  name         String
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+
+  dishes DishCategory[]
+}
+
+model Dish {
+  id           String   @id @default(cuid())
+  name         String
+  description  String
+  spiceLevel   Int?
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  categories DishCategory[]
+}
+
+model DishCategory {
+  id         String @id @default(cuid())
+  categoryId String
+  dishId     String
+  category   Category @relation(fields: [categoryId], references: [id])
+  dish       Dish     @relation(fields: [dishId], references: [id])
+}
