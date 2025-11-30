@@ -2,25 +2,27 @@
 
 import { useState, type SetStateAction, type ChangeEvent } from "react";
 import { Button } from "~/components/ui/button";
-
-const Input = (props: any) => (
-  <input
-    {...props}
-    className={`border rounded px-3 py-2 w-full ${props.className ?? ""}`}
-  />
-);
-
+import { Input } from "~/components/ui/input";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
 
   async function sendOtp() {
-    await fetch("/api/auth/send-otp", {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(email.trim() === "" || email === null){
+        alert("Email address cannot be empty");
+        return;
+    }else if(regex.test(email) === false){
+        alert("Invalid Email address");
+        return;
+    }
+
+     await fetch("/api/auth/send-otp", {
       method: "POST",
       body: JSON.stringify({ email }),
     }).then((res) => res.json()).then((data) => {
       console.log("OTP sent:", data.otp);
-      window.location.href = `/verify?email=${email}`;
+      window.location.href = `/verify?id=${email}`;
     });
     
     

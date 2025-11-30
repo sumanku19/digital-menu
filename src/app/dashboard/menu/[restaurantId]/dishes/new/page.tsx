@@ -4,13 +4,7 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { use } from "react";
 
 import { Button } from "~/components/ui/button";
-
-const Input = (props: any) => (
-  <input
-    {...props}
-    className={`border rounded px-3 py-2 w-full ${props.className ?? ""}`}
-  />
-);
+import { Input } from "~/components/ui/input";
 
 // const uploadDir = path.join(process.cwd(), "public/uploads/dishes");
 // if (!fs.existsSync(uploadDir)) {

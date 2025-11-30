@@ -35,15 +35,15 @@ export async function POST(req: Request) {
     });
 
     // Send email via Gmail or SMTP only in production when credentials are provided.
-    const hasMailCreds = Boolean(process.env.MAIL_USER && process.env.MAIL_PASS);
+    const hasMailCreds = Boolean(process.env.EMAIL_SERVER_USER && process.env.EMAIL_SERVER_PASSWORD);
     const inProd = process.env.NODE_ENV === "production";
 
     if (hasMailCreds && inProd) {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: process.env.MAIL_USER,
-          pass: process.env.MAIL_PASS,
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
         },
       });
 

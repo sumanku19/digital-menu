@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
 
     await writeFile(filepath, optimized);
 
-    const imageUrl = `http://localhost:3000/uploads/dishes/${filename}`;
+    const imageUrl = process.env.NEXT_PUBLIC_BASE_URL + `/uploads/dishes/${filename}`;
 
     return NextResponse.json({ success: true, imageUrl });
   } catch (err: any) {
